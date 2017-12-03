@@ -1,0 +1,19 @@
+{
+  "name": "01",
+  "version": "1.0.0",
+  "description": "Advent Of Code 2017 Dec 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claq2/AdventOfCode2017.git"
+  },
+  "author": "James McLachlan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/claq2/AdventOfCode2017/issues"
+  },
+  "homepage": "https://github.com/claq2/AdventOfCode2017#readme"
+}
