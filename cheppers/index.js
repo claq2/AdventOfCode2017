@@ -19,10 +19,10 @@ let left = '←'.charCodeAt(0);
 let right = '→'.charCodeAt(0);
 let b = 'B'.charCodeAt(0);
 let a = 'A'.charCodeAt(0);
-let upBytes = [38];//[parseInt('e2', 16), parseInt('86', 16), parseInt('91', 16)];//getInt64Bytes(up);
-let downBytes =[40];// [parseInt('e2', 16), parseInt('86', 16), parseInt('93', 16)];//getInt64Bytes(down);
-let leftBytes = [37]//[parseInt('e2', 16), parseInt('86', 16), parseInt('90', 16)];//getInt64Bytes(left);
-let rightBytes = [39]//[parseInt('e2', 16), parseInt('86', 16), parseInt('92', 16)];//getInt64Bytes(right);
+let upBytes = [parseInt('e2', 16), parseInt('86', 16), parseInt('91', 16)];//getInt64Bytes(up); [38]
+let downBytes = [parseInt('e2', 16), parseInt('86', 16), parseInt('93', 16)];//getInt64Bytes(down); [40]
+let leftBytes = [parseInt('e2', 16), parseInt('86', 16), parseInt('90', 16)];//getInt64Bytes(left); [37]
+let rightBytes = [parseInt('e2', 16), parseInt('86', 16), parseInt('92', 16)];//getInt64Bytes(right); [39]
 console.log('upBytes', upBytes);
 console.log('downBytes', downBytes);
 console.log('leftBytes', leftBytes);
@@ -60,4 +60,11 @@ console.log('xored', xored.map(i=>i.toString(16)));
 let xoredBase64 = Buffer.from(xored).toString('base64');
 console.log('xoredBase64', xoredBase64);
 console.log(xored.map(i=>String.fromCharCode(i)));
+
+// let orig = '4oqVKEhnZ0pBZ3RUUkVBZUZCOEtDQjBMQjBNWkNSVkJNd3dSSXg4Y0VBb0hIUXdkQXgwSENnPT0sIOKGkeKGkeKGk+KGk+KGkOKGkuKGkOKGkkJBKQ==';
+// let origBuf = Buffer.from(orig, 'base64');
+// for (let i = 0; i < origBuf.length; i++) {
+//     const element = origBuf[i];
+//     console.log(origBuf[i], String.fromCharCode(origBuf[i]));
+// }
 
