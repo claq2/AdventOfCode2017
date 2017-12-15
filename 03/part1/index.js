@@ -1,3 +1,11 @@
+// @ ts-check 
+
+/**
+ * 
+ * 
+ * @param {number} min 
+ * @returns 
+ */
 function nextSquare(min) {
     let result = min;
     let sqrt = Math.sqrt(result);
@@ -9,7 +17,12 @@ function nextSquare(min) {
 
     return result;
 }
-
+/**
+ * 
+ * 
+ * @param {number} min 
+ * @returns
+ */
 function buildSpiral(min) {
     let spiral = [];
     let dimensionality = Math.sqrt(nextSquare(min));
@@ -27,7 +40,7 @@ function buildSpiral(min) {
 }
 
 
-let nextSquare8 = nextSquare(8);
+let nextSquare8 = nextSquare(9);
 if (nextSquare8 !== 9) {
     console.error(`${nextSquare8} is not 9`);
 } else {
@@ -105,9 +118,9 @@ if (spiral9.length !== 3) {
     error9 = true;
 }
 
-let errors = 0 + error1 + error9;
-if (errors > 0) {
-    console.error(`${errors} failures`);
+let errorCount = 0 + (error1 ? 1 : 0) + (error9 ? 1 : 0);
+if (errorCount > 0) {
+    console.error(`${errorCount} failures`);
 } else {
     console.log('All pass');
 }
