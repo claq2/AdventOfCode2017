@@ -37,7 +37,7 @@ function buildSpiral(min) {
             }
 
             for (let j = 0; j < dimensionality; j++) {
-                if (i > 0 && j > 0) {
+                if (i !== 0 || j !== 0) {
                     spiral[i].push(2);
                 }
             }
@@ -128,7 +128,7 @@ function checkSpiral(expected, actual) {
         for (let j = 0; j < iElement.length; j++) {
             const jElement = iElement[j];
             if (jElement !== actual[i][j]) {
-                //console.error(`expected ${i},${j} to be ${jElement} but was ${actual[i][j]}`);
+                console.error(`expected ${i},${j} to be ${jElement} but was ${actual[i][j]}`);
                 result = false;
             }
         }
