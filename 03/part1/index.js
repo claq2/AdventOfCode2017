@@ -23,6 +23,7 @@ function buildSpiral(min) {
         }
     }
 
+    console.log(spiral);
     return spiral;
 }
 
@@ -103,11 +104,42 @@ if (spiral9.length !== 3) {
 } else if (spiral9[2].length !== 3) {
     console.error(`9[2] length is ${spiral9[2].length}`);
     error9 = true;
+} else {
+    console.log('9 passed');
 }
 
-let errors = 0 + error1 + error9;
+let error25 = false;
+// check 9
+if (spiral25.length !== 5) {
+    console.error(`25 length is ${spiral25.length}`);
+    error25 = true;
+} else if (spiral25[0].length !== 5) {
+    console.error(`25[0] length is ${spiral25[0].length}`);
+    error25 = true;
+} else if (spiral25[1].length !== 5) {
+    console.error(`25[1] length is ${spiral25[1].length}`);
+    error25 = true;
+} else if (spiral25[2].length !== 5) {
+    console.error(`25[2] length is ${spiral25[2].length}`);
+    error25 = true;
+} else if (spiral25[3].length !== 5) {
+    console.error(`25[3] length is ${spiral25[3].length}`);
+    error25 = true;
+} else if (spiral25[4].length !== 5) {
+    console.error(`25[4] length is ${spiral25[4].length}`);
+    error25 = true;
+} else {
+    console.log('25 passed');
+    console.log(`25 bottom right corner is ${spiral25[spiral25.length - 1][spiral25.length -1 ]}`);
+}
+
+let errors = 0 + error1 + error9 + error25;
 if (errors > 0) {
     console.error(`${errors} failures`);
 } else {
     console.log('All pass');
 }
+
+// let spiral347991 = buildSpiral(347991);
+// console.log(`spiral347991 length is ${spiral347991.length}`);
+// console.log(`bottom right corner is ${spiral347991[spiral347991.length - 1][spiral347991.length -1]}`);
