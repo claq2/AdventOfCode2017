@@ -21,18 +21,26 @@ function nextSquare(min) {
  * 
  * 
  * @param {number} min 
- * @returns
+ * @returns {Array.<Array.<number>>} spiral
  */
 function buildSpiral(min) {
-    let spiral = [];
-    let dimensionality = Math.sqrt(nextSquare(min));
-    for (let i = 0; i < dimensionality; i++) {
-        spiral.push([]);
-    }
+    let spiral = [[1]];
+    let dimensionality = Math.sqrt(nextSquare(min)); // min = 2,3,4 then dim = 4; min = 5,6,7,8,9 then dim = 9
+    // for (let i = 0; i < dimensionality; i++) {
+    //     spiral.push([]);
+    // }
 
-    for (let i = 0; i < dimensionality; i++) {
-        for (let j = 0; j < dimensionality; j++) {
-            spiral[i].push(1);
+    if (min > 1) {
+        for (let i = 0; i < dimensionality; i++) {
+            if (i > 0) {
+                spiral.push([]);
+            }
+
+            for (let j = 0; j < dimensionality; j++) {
+                if (i > 0 && j > 0) {
+                    spiral[i].push(2);
+                }
+            }
         }
     }
 
@@ -91,64 +99,82 @@ if (nextSquare24 !== 25) {
 }
 
 let spiral1 = buildSpiral(1);
+let spiral4 = buildSpiral(4);
 let spiral9 = buildSpiral(9);
 let spiral25 = buildSpiral(25);
 
+let expected1 = [[1]];
+let expected4 = [[4, 3], [1, 2]];
+let expected9 = [[5, 4, 3], [6, 1, 2], [7, 8, 9]];
+let expected25 = [[17, 16, 15, 14, 13], [18, 5, 4, 3, 12], [19, 6, 1, 2, 11], [20, 7, 8, 9, 10], [21, 22, 23, 24, 25]];
+
+function checkSpiral(expected, actual) {
+    let result = true;
+    if (actual.length !== expected.length) {
+        console.error(`expected main array length ${expected.length} but was ${actual.length}`);
+        result = false;
+    }
+
+    for (let i = 0; i < expected.length; i++) {
+        const element = expected[i];
+        if (actual[i].length !== element.length) {
+            console.error(`expected array length at ${i} to be ${expected[i].length} but was ${actual[i].length}`);
+            result = false;
+        }
+    }
+
+    for (let i = 0; i < expected.length; i++) {
+        const iElement = expected[i];
+        for (let j = 0; j < iElement.length; j++) {
+            const jElement = iElement[j];
+            if (jElement !== actual[i][j]) {
+                //console.error(`expected ${i},${j} to be ${jElement} but was ${actual[i][j]}`);
+                result = false;
+            }
+        }
+    }
+
+    return result;
+}
+
 // check 1
-let error1 = false;
-if (spiral1.length !== 1 || spiral1[0].length !== 1 && spiral1[0][0] !== 1) {
-    console.error('1 failed');
-    error1 = true;
-} else {
+let pass1 = checkSpiral(expected1, spiral1);
+if (pass1) {
     console.log('1 passed');
+} else {
+    console.error('1 failed');
+}
+// if (spiral1.length !== 1 || spiral1[0].length !== 1 && spiral1[0][0] !== 1) {
+//     console.error('1 failed');
+//     error1 = true;
+// } else {
+//     console.log('1 passed');
+// }
+
+let pass4 = checkSpiral(expected4, spiral4);
+if (pass4) {
+    console.log('4 passed');
+} else {
+    console.error('4 failed');
 }
 
-let error9 = false;
-// check 9
-if (spiral9.length !== 3) {
-    console.error(`9 length is ${spiral9.length}`);
-    error9 = true;
-} else if (spiral9[0].length !== 3) {
-    console.error(`9[0] length is ${spiral9[0].length}`);
-    error9 = true;
-} else if (spiral9[1].length !== 3) {
-    console.error(`9[1] length is ${spiral9[1].length}`);
-    error9 = true;
-} else if (spiral9[2].length !== 3) {
-    console.error(`9[2] length is ${spiral9[2].length}`);
-    error9 = true;
-} else {
+let pass9 = checkSpiral(expected9, spiral9);
+if (pass9) {
     console.log('9 passed');
-}
-
-let error25 = false;
-// check 9
-if (spiral25.length !== 5) {
-    console.error(`25 length is ${spiral25.length}`);
-    error25 = true;
-} else if (spiral25[0].length !== 5) {
-    console.error(`25[0] length is ${spiral25[0].length}`);
-    error25 = true;
-} else if (spiral25[1].length !== 5) {
-    console.error(`25[1] length is ${spiral25[1].length}`);
-    error25 = true;
-} else if (spiral25[2].length !== 5) {
-    console.error(`25[2] length is ${spiral25[2].length}`);
-    error25 = true;
-} else if (spiral25[3].length !== 5) {
-    console.error(`25[3] length is ${spiral25[3].length}`);
-    error25 = true;
-} else if (spiral25[4].length !== 5) {
-    console.error(`25[4] length is ${spiral25[4].length}`);
-    error25 = true;
 } else {
-    console.log('25 passed');
-    console.log(`25 bottom right corner is ${spiral25[spiral25.length - 1][spiral25.length -1 ]}`);
+    console.error('9 failed');
 }
 
-let errorCount = 0 + (error1 ? 1 : 0) + (error9 ? 1 : 0) + (error25 ? 1 : 0);
-if (errors > 0) {
-    console.error(`${errors} failures`);
+let pass25 = checkSpiral(expected25, spiral25);
+if (pass25) {
+    console.log('25 passed');
+} else {
+    console.error('25 failed');
+}
+
+let errorCount = 0 + (pass1 ? 0 : 1) + (pass4 ? 0 : 1) + (pass9 ? 0 : 1) + (pass25 ? 0 : 1);
+if (errorCount > 0) {
+    console.error(`${errorCount} failures`);
 } else {
     console.log('All pass');
 }
