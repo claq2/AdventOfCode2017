@@ -24,25 +24,50 @@ function nextSquare(min) {
  * @returns {Array.<Array.<number>>} spiral
  */
 function buildSpiral(min) {
-    let spiral = [[1]];
-    let dimensionality = Math.sqrt(nextSquare(min)); // min = 2,3,4 then dim = 4; min = 5,6,7,8,9 then dim = 9
+    let x = 1;
+    let spiral = [[x]];
+    let max = nextSquare(min);
+    let dimensionality = Math.sqrt(nextSquare(min)); // min = 2,3,4 then dim = 2; min = 5,6,7,8,9 then dim = 3
+    if (min > 1) {
+        if (dimensionality % 2 === 0) {
+            // start bottom right, ->, ^ x dim - 1, <- x dim - 1
+            spiral[spiral.length - 1].push(++x);
+            for (let i = 0; i < dimensionality - 1; i++) {
+                if (spiral.length - 1 - i === 0) {
+                    // build next row 
+                    let nextRow = [[++x]];
+                    while (x < max){
+                        nextRow[0] = [++x].concat(nextRow[0]);
+                    }
+
+                    spiral = nextRow.concat(spiral);
+                } else {
+                    // add to end of an existing row, starting at bottom
+                    spiral[spiral.length - 1 - i].push(++x);
+                }
+            }
+        } else {
+            // start top left, <-, . x dim - 1, -> x dim - 1
+            spiral[0] = [++x].concat(spiral[0]);
+        }
+    }
     // for (let i = 0; i < dimensionality; i++) {
     //     spiral.push([]);
     // }
 
-    if (min > 1) {
-        for (let i = 0; i < dimensionality; i++) {
-            if (i > 0) {
-                spiral.push([]);
-            }
+    // if (min > 1) {
+    //     for (let i = 0; i < dimensionality; i++) {
+    //         if (i > 0) {
+    //             spiral.push([]);
+    //         }
 
-            for (let j = 0; j < dimensionality; j++) {
-                if (i !== 0 || j !== 0) {
-                    spiral[i].push(2);
-                }
-            }
-        }
-    }
+    //         for (let j = 0; j < dimensionality; j++) {
+    //             if (i !== 0 || j !== 0) {
+    //                 spiral[i].push(2);
+    //             }
+    //         }
+    //     }
+    // }
 
     console.log(spiral);
     return spiral;
