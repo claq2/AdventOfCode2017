@@ -17,32 +17,33 @@ function nextSquare(min) {
 
     return result;
 }
+
+class Cell {
+    constructor(number, coords) {
+        this.upCell = null;
+        this.downCell = null;
+        this.leftCell = null;
+        this.rightCell = null;
+        this.number = number;
+        this.coords = coords;
+    }
+}
+
 /**
  * 
  * 
  * @param {number} min 
- * @returns {Array.<Array.<number>>} spiral
+ * @returns {Cell} spiral
  */
 function buildSpiral(min) {
-    let spiral = [[1]];
+    let centreCell = new Cell(1, [0, 0]);
+    let spiral = centreCell;
     let dimensionality = Math.sqrt(nextSquare(min)); // min = 2,3,4 then dim = 4; min = 5,6,7,8,9 then dim = 9
     // for (let i = 0; i < dimensionality; i++) {
     //     spiral.push([]);
     // }
 
-    if (min > 1) {
-        for (let i = 0; i < dimensionality; i++) {
-            if (i > 0) {
-                spiral.push([]);
-            }
 
-            for (let j = 0; j < dimensionality; j++) {
-                if (i !== 0 || j !== 0) {
-                    spiral[i].push(2);
-                }
-            }
-        }
-    }
 
     console.log(spiral);
     return spiral;
@@ -103,41 +104,91 @@ let spiral4 = buildSpiral(4);
 let spiral9 = buildSpiral(9);
 let spiral25 = buildSpiral(25);
 
-let expected1 = [[1]];
-let expected4 = [[4, 3], [1, 2]];
-let expected9 = [[5, 4, 3], [6, 1, 2], [7, 8, 9]];
-let expected25 = [[17, 16, 15, 14, 13], [18, 5, 4, 3, 12], [19, 6, 1, 2, 11], [20, 7, 8, 9, 10], [21, 22, 23, 24, 25]];
+let expected1 = new Cell(1, [0, 0]);
 
-function checkSpiral(expected, actual) {
+let expected4 = new Cell(1, [0, 0]);
+expected4.rightCell = new Cell(2, [1, 0]);
+expected4.rightCell.upCell = new Cell(3, [1, 1]);
+expected4.rightCell.upCell.leftCell = new Cell(4, [0, 1]);
+
+let expected9 = new Cell(1, [0, 0]);
+expected9.rightCell = new Cell(2, [1, 0]);
+expected9.rightCell.upCell = new Cell(3, [1, 1]);
+expected9.rightCell.upCell.leftCell = new Cell(4, [0, 1]);
+
+let expected25 = new Cell(1, [0, 0]);
+expected25.rightCell = new Cell(2, [1, 0]);
+expected25.rightCell.upCell = new Cell(3, [1, 1]);
+expected25.rightCell.upCell.leftCell = new Cell(4, [0, 1]);
+
+let right = [1, 0];
+let left = [-1, 0];
+let up = [0, 1];
+let down = [0, -1];
+
+let DirectionEnum = Object.freeze({ RIGHT: 0, UP: 1, LEFT: 2, DOWN: 3 });
+
+function checkSpiral(expected, actual, currentDirection) {
     let result = true;
-    if (actual.length !== expected.length) {
-        console.error(`expected main array length ${expected.length} but was ${actual.length}`);
+    if (currentDirection == null) {
+        // Start by going right
+        currentDirection = DirectionEnum.RIGHT;
+    }
+
+    if (actual == null) {
+        console.log(`Found null cell at ${expected.coords}`);
         result = false;
-    }
+    } else if (actual.coords[0] !== expected.coords[0] || actual.coords[1] !== expected.coords[1]) {
+        console.error(`Expected coords ${expected.coords} but found ${actual.coords}`);
+        result = false;
+    } else if (actual.number !== expected.number) {
+        console.error(`Expected ${expected.number} at ${expected.coords} but found ${actual.number}`);
+        result = false;
+    } else {
 
-    for (let i = 0; i < expected.length; i++) {
-        const element = expected[i];
-        if (actual[i].length !== element.length) {
-            console.error(`expected array length at ${i} to be ${expected[i].length} but was ${actual[i].length}`);
-            result = false;
+        switch (currentDirection) {
+            case DirectionEnum.RIGHT:
+                if (expected.rightCell != null) {
+                    result = checkSpiral(expected.rightCell, actual.rightCell, currentDirection);
+                } else if (expected.upCell != null) {
+                    // Out of right cells, check up
+                    result = checkSpiral(expected.upCell, actual.upCell, DirectionEnum.UP);
+                }
+                break;
+
+            case DirectionEnum.UP:
+                if (expected.upCell != null) {
+                    result = checkSpiral(expected.upCell, actual.upCell, currentDirection);
+                } else if (expected.leftCell != null) {
+                    // Out of up cells, check left
+                    result = checkSpiral(expected.leftCell, actual.leftCell, DirectionEnum.LEFT);
+                }
+                break;
+
+            case DirectionEnum.LEFT:
+                if (expected.leftCell != null) {
+                    result = checkSpiral(expected.leftCell, actual.leftCell, currentDirection);
+                } else if (expected.downCell != null) {
+                    // Out of left cells, check down
+                    result = checkSpiral(expected.downCell, actual.downCell, DirectionEnum.DOWN);
+                }
+                break;
+
+            case DirectionEnum.DOWN:
+                if (expected.downCell != null) {
+                    result = checkSpiral(expected.downCell, actual.downCell, currentDirection);
+                } else if (expected.rightCell != null) {
+                    // Out of down cells, check right
+                    result = checkSpiral(expected.rightCell, actual.rightCell, DirectionEnum.RIGHT);
+                }
+                break;
         }
     }
-
-    for (let i = 0; i < expected.length; i++) {
-        const iElement = expected[i];
-        for (let j = 0; j < iElement.length; j++) {
-            const jElement = iElement[j];
-            if (jElement !== actual[i][j]) {
-                console.error(`expected ${i},${j} to be ${jElement} but was ${actual[i][j]}`);
-                result = false;
-            }
-        }
-    }
-
     return result;
 }
 
 // check 1
+console.log('Checking 1');
 let pass1 = checkSpiral(expected1, spiral1);
 if (pass1) {
     console.log('1 passed');
@@ -151,6 +202,7 @@ if (pass1) {
 //     console.log('1 passed');
 // }
 
+console.log('Checking 4');
 let pass4 = checkSpiral(expected4, spiral4);
 if (pass4) {
     console.log('4 passed');
@@ -158,6 +210,7 @@ if (pass4) {
     console.error('4 failed');
 }
 
+console.log('Checking 9');
 let pass9 = checkSpiral(expected9, spiral9);
 if (pass9) {
     console.log('9 passed');
@@ -165,6 +218,7 @@ if (pass9) {
     console.error('9 failed');
 }
 
+console.log('Checking 25');
 let pass25 = checkSpiral(expected25, spiral25);
 if (pass25) {
     console.log('25 passed');
