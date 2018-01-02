@@ -44,7 +44,6 @@ function buildSpiral(min) {
     // }
 
 
-
     console.log(spiral);
     return spiral;
 }
