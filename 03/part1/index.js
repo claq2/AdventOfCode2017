@@ -20,6 +20,7 @@ function nextSquare(min) {
 
 class Cell {
     constructor(number, coords) {
+        /** @type {Cell} */
         this.upCell = null;
         this.downCell = null;
         this.leftCell = null;
