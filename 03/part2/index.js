@@ -1,3 +1,35 @@
+class Cell {
+    constructor(number, location) {
+        this.location = location;
+        this.northCell = null;
+        this.northEastCell = null;
+        this.eastCell = null;
+        this.southEastCell = null;
+        this.southCell = null;
+        this.southWestCell = null;
+        this.westCell = null;
+        this.northWestCell = null;
+        this.number = number;
+    }
+}
+
+const dim1 = new Cell(1, [0,0]);
+const dim2 = new Cell(1, [0,0]); // dim2 = 1
+dim2.eastCell = new Cell(2, [1, 0]);
+let prevCell = dim2; // prevCell = 1
+let currCell = dim2.eastCell; // currCell = 2
+currCell.northCell = new Cell(3, [1,1]);
+currCell.westCell = prevCell;
+prevCell = currCell; // prevCell = 2
+currCell = currCell.northCell; // currCell = 3
+currCell.westCell = new Cell(4, [0, 1]);
+currCell.southCell = prevCell;
+prevCell = currCell; // prevCell = 3
+currCell = currCell.westCell; // currCell = 4
+currCell.southCell = dim1;
+currCell.eastCell = prevCell;
+// As items added, either there is a down+right, down+left, down+left+right, 
+
 let cornersDim1 = [1];
 let cornersDim2 = [1, 2, 3, 4];
 
