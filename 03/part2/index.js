@@ -13,34 +13,26 @@ class Cell {
     constructor(number, location) {
         this.location = location;
         this.neighbours = [];
-        this.northCell = null;
-        this.northEastCell = null;
-        this.eastCell = null;
-        this.southEastCell = null;
-        this.southCell = null;
-        this.southWestCell = null;
-        this.westCell = null;
-        this.northWestCell = null;
         this.number = number;
     }
 }
 
 const dim1 = new Cell(1, [0, 0]);
+
 const dim2 = new Cell(1, [0, 0]); // dim2 = #1
-dim2.eastCell = new Cell(1, [1, 0]);
-dim2.neighbours[directions.EAST] = dim2.eastCell;
+dim2.neighbours[directions.EAST] = new Cell(1, [1, 0]);
 let prevCell = dim2; // prevCell = #1
-let currCell = dim2.eastCell; // currCell = #2
-currCell.northCell = new Cell(2, [1, 1]);
-currCell.westCell = prevCell;
+let currCell = dim2.neighbours[directions.EAST]; // currCell = #2
+currCell.neighbours[directions.NORTH] = new Cell(2, [1, 1]);
+currCell.neighbours[directions.WEST] = prevCell;
 prevCell = currCell; // prevCell = #2
-currCell = currCell.northCell; // currCell = #3
-currCell.westCell = new Cell(4, [0, 1]);
-currCell.southCell = prevCell;
+currCell = currCell.neighbours[directions.NORTH]; // currCell = #3
+currCell.neighbours[directions.WEST] = new Cell(4, [0, 1]);
+currCell.neighbours[directions.SOUTH] = prevCell;
 prevCell = currCell; // prevCell = #3
-currCell = currCell.westCell; // currCell = #4
-currCell.southCell = dim1;
-currCell.eastCell = prevCell;
+currCell = currCell.neighbours[directions.WEST]; // currCell = #4
+currCell.neighbours[directions.SOUTH] = dim1;
+currCell.neighbours[directions.EAST] = prevCell;
 // As items added, either there is a down+right, down+left, down+left+right, 
 
 // either:
