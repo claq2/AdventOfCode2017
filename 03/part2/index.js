@@ -34,11 +34,69 @@ dim2Array.forEach(element => {
 });
 
 let dim3Array = new Array(3);
-dim3Array[0]=[5].concat(dim2Array[0]);
+dim3Array[0] = [5].concat(dim2Array[0]);
 dim3Array[1] = [10].concat(dim2Array[1]);
 dim3Array[2] = [11, 23, 25];
 console.log('dim3Array');
 dim3Array.forEach(element => {
+    console.log(element);
+});
+
+
+function dimArray(x) {
+    if (x === 1) {
+        return dim1Array;
+    } else if (x === 2) {
+        return dim2Array;
+    }
+
+    let previousArray = dim2Array.slice(0);
+    let currArray;
+    for (let currDim = 3; currDim <= x; currDim++) {
+        currArray = new Array(currDim);
+        if (currDim % 2 !== 0) {
+            console.log('odd');
+            // start in upper left corner, go down, then right
+            // left side
+            for (let j = 0; j < currDim; j++) {
+                let sum = 0;
+                if (j === 0) {
+                    // if top left element, add old number to right and to down-right
+                    sum = previousArray[j][0] + previousArray[1][0];
+                } else if (j === currDim - 1) {
+                    // if bottom left element, add previous number, and to up-right
+                    sum = currArray[j - 1][0] + previousArray[previousArray.length - 1][0];
+                } else {
+                    // if other side element, add previous number, "all other neighbours"
+                    sum = currArray[j - 1][0];
+                }
+
+                currArray[j] = [sum].concat(previousArray[j]);
+            }
+
+            // bottom
+            for (let j = 1; j < currDim; j++) {
+                let sum = 0;
+                currArray[currDim - 1][j] = sum;
+            }
+        } else {
+            console.log('even');
+            // start in bottom right corner, go up, then left
+        }
+    }
+
+    return currArray;
+}
+
+let dim3ArrayCalc = dimArray(3);
+console.log('dim3ArrayCalc');
+dim3ArrayCalc.forEach(element => {
+    console.log(element);
+});
+
+let dim4ArrayCalc = dimArray(4);
+console.log('dim4ArrayCalc');
+dim4ArrayCalc.forEach(element => {
     console.log(element);
 });
 
@@ -63,60 +121,3 @@ currCell.neighbours[directions.EAST] = prevCell;
 // either:
 //   - odd dim - go left 1, down dim - 1, right dim - 1
 //   - even dim - go right 1, up dim - 1, left dim - 1
-
-let cornersDim1 = [1];
-let cornersDim2 = [1, 2, 3, 4];
-
-function dim(x) {
-    if (x === 1) {
-        return cornersDim1;
-    } else if (x === 2) {
-        return cornersDim2;
-    } else {
-        let currCorners = cornersDim2;
-        for (let index = 3; index <= x; index++) {
-            let firstCorner = currCorners[2];
-            currCorners = [firstCorner, firstCorner + index - 1, firstCorner + (index - 1) * 2, firstCorner + (index - 1) * 3];
-
-        }
-
-        return currCorners;
-    }
-}
-
-function findDim(y) {
-    let currCorners = cornersDim1;
-    let currDim = 1;
-    do {
-        currDim++;
-        currCorners = dim(currDim);
-    } while (currCorners.every(c => c <= y));
-
-    return [currDim].concat(currCorners);
-}
-
-console.log(`Dim 1: ${dim(1)}`);
-console.log(`Dim 2: ${dim(2)}`);
-console.log(`Dim 3: ${dim(3)}`);
-console.log(`Dim 4: ${dim(4)}`);
-console.log(`Dim 5: ${dim(5)}`);
-console.log(`Dim 6: ${dim(6)}`);
-console.log(`Dim 590: ${dim(590)}`);
-console.log(`Number 12 is in dim ${findDim(12)}`);
-console.log(`Number 18 is in dim ${findDim(18)}`);
-console.log(`Number 347991 is in dim ${findDim(347991)}`);
-
-/*
- <--    590/2 - 1 = 294   --> <-- 590/2 = 295 ->
-              <-- 185     -->
- 348100 ... 347991 ... 347806 347805 ... 347511 A
-    .                                         . |
-    .                                         . 590/2 = 295
-    .                                         . |
-    .  ...                  1      2 ...      . V
-    .                                         .
-    .                                         .
- 346333 ...                          ... 346922
-
- 185 + 295 = 480
-*/
