@@ -1,6 +1,18 @@
+const directions = {
+    NORTH: 0,
+    NORTHEAST: 1,
+    EAST: 2,
+    SOUTHEAST: 3,
+    SOUTH: 4,
+    SOUTHWEST: 5,
+    WEST: 6,
+    NORTHWEST: 7,
+};
+
 class Cell {
     constructor(number, location) {
         this.location = location;
+        this.neighbours = [];
         this.northCell = null;
         this.northEastCell = null;
         this.eastCell = null;
@@ -13,22 +25,27 @@ class Cell {
     }
 }
 
-const dim1 = new Cell(1, [0,0]);
-const dim2 = new Cell(1, [0,0]); // dim2 = 1
-dim2.eastCell = new Cell(2, [1, 0]);
-let prevCell = dim2; // prevCell = 1
-let currCell = dim2.eastCell; // currCell = 2
-currCell.northCell = new Cell(3, [1,1]);
+const dim1 = new Cell(1, [0, 0]);
+const dim2 = new Cell(1, [0, 0]); // dim2 = #1
+dim2.eastCell = new Cell(1, [1, 0]);
+dim2.neighbours[directions.EAST] = dim2.eastCell;
+let prevCell = dim2; // prevCell = #1
+let currCell = dim2.eastCell; // currCell = #2
+currCell.northCell = new Cell(2, [1, 1]);
 currCell.westCell = prevCell;
-prevCell = currCell; // prevCell = 2
-currCell = currCell.northCell; // currCell = 3
+prevCell = currCell; // prevCell = #2
+currCell = currCell.northCell; // currCell = #3
 currCell.westCell = new Cell(4, [0, 1]);
 currCell.southCell = prevCell;
-prevCell = currCell; // prevCell = 3
-currCell = currCell.westCell; // currCell = 4
+prevCell = currCell; // prevCell = #3
+currCell = currCell.westCell; // currCell = #4
 currCell.southCell = dim1;
 currCell.eastCell = prevCell;
 // As items added, either there is a down+right, down+left, down+left+right, 
+
+// either:
+//   - odd dim - go left 1, down dim - 1, right dim - 1
+//   - even dim - go right 1, up dim - 1, left dim - 1
 
 let cornersDim1 = [1];
 let cornersDim2 = [1, 2, 3, 4];
