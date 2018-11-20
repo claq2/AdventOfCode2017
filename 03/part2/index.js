@@ -23,15 +23,24 @@ console.log(dim1Array[0]);
 
 let dim2Array = new Array(2);
 dim2Array[0] = new Array(2);
-dim2Array[0][0] = 1;
-dim2Array[0][1] = 1;
+dim2Array[0][1] = 2;
+dim2Array[0][0] = 4;
 dim2Array[1] = new Array(2);
-dim2Array[1][1] = 2;
-dim2Array[1][0] = 4;
+dim2Array[1][0] = 1;
+dim2Array[1][1] = 1;
 console.log('dim2Array');
-console.log(dim2Array[1]);
-console.log(dim2Array[0]);
+dim2Array.forEach(element => {
+    console.log(element);
+});
 
+let dim3Array = new Array(3);
+dim3Array[0]=[5].concat(dim2Array[0]);
+dim3Array[1] = [10].concat(dim2Array[1]);
+dim3Array[2] = [11, 23, 25];
+console.log('dim3Array');
+dim3Array.forEach(element => {
+    console.log(element);
+});
 
 const dim1 = new Cell(1, [0, 0]);
 
