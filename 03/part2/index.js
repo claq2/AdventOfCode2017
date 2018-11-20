@@ -17,6 +17,22 @@ class Cell {
     }
 }
 
+let dim1Array = [[1]];
+console.log('dim1Array');
+console.log(dim1Array[0]);
+
+let dim2Array = new Array(2);
+dim2Array[0] = new Array(2);
+dim2Array[0][0] = 1;
+dim2Array[0][1] = 1;
+dim2Array[1] = new Array(2);
+dim2Array[1][1] = 2;
+dim2Array[1][0] = 4;
+console.log('dim2Array');
+console.log(dim2Array[1]);
+console.log(dim2Array[0]);
+
+
 const dim1 = new Cell(1, [0, 0]);
 
 const dim2 = new Cell(1, [0, 0]); // dim2 = #1
