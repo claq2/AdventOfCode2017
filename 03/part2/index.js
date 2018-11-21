@@ -98,8 +98,17 @@ function dimArray(x) {
             }
         } else {
             console.log('even');
+            console.log(`currDim ${currDim}`);
+            console.log(`currArray length ${currArray.length}`);
             // start in bottom right corner, go up, then left
-            currArray = previousArray.slice(0);
+            for (let j = currDim - 1; j > 0; j--) {
+                currArray[j] = previousArray[j - 1].concat([currDim - j]);
+            }
+
+            currArray[0] = [];
+            for (let j = 0; j < currDim; j++) {
+                currArray[0] = [j].concat(currArray[0]);
+            }
         }
 
         previousArray = currArray.slice(0);
@@ -117,6 +126,18 @@ dim3ArrayCalc.forEach(element => {
 let dim4ArrayCalc = dimArray(4);
 console.log('dim4ArrayCalc');
 dim4ArrayCalc.forEach(element => {
+    console.log(element);
+});
+
+let dim5ArrayCalc = dimArray(5);
+console.log('dim5ArrayCalc');
+dim5ArrayCalc.forEach(element => {
+    console.log(element);
+});
+
+let dim6ArrayCalc = dimArray(6);
+console.log('dim6ArrayCalc');
+dim6ArrayCalc.forEach(element => {
     console.log(element);
 });
 
