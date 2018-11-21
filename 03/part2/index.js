@@ -69,6 +69,11 @@ function dimArray(x) {
                 } else {
                     // if other side element, add previous number, "all other neighbours"
                     sum = currArray[j - 1][0];
+                    for (let n = -1; n < 2; n++) {
+                        if (previousArray[j + n] !== undefined) {
+                            sum += previousArray[j + n][0];
+                        }
+                    }
                 }
 
                 currArray[j] = [sum].concat(previousArray[j]);
