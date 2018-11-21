@@ -101,8 +101,10 @@ function dimArray(x) {
             console.log(`currDim ${currDim}`);
             console.log(`currArray length ${currArray.length}`);
             // start in bottom right corner, go up, then left
+            let num = 0;
             for (let j = currDim - 1; j > 0; j--) {
-                currArray[j] = previousArray[j - 1].concat([currDim - j]);
+                currArray[j] = previousArray[j - 1].concat([num]);
+                num ++;
             }
 
             currArray[0] = [];
