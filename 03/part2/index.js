@@ -67,8 +67,9 @@ function dimArray(x) {
                     // if bottom left element, add previous number, and to up-right
                     sum = currArray[j - 1][0] + previousArray[previousArray.length - 1][0];
                 } else {
-                    // if other side element, add previous number, "all other neighbours"
+                    // if other side element, add previous number, "all other neighbours to the right"
                     sum = currArray[j - 1][0];
+                    // other neighbours are {y - 1, 0}, {y, 0}, {y + 1, 0} of previousArray
                     for (let n = -1; n < 2; n++) {
                         if (previousArray[j + n] !== undefined) {
                             sum += previousArray[j + n][0];
@@ -82,12 +83,26 @@ function dimArray(x) {
             // bottom
             for (let j = 1; j < currDim; j++) {
                 let sum = 0;
+                if (j === currDim - 1) {
+                    // bottom right corner, add previous number, up and up-left
+                    sum = currArray[currDim - 1][currDim - 2] + currArray[currDim - 2][currDim - 1] + currArray[currDim - 2][currDim - 2];
+                } else {
+                    // if other bottom element, add previous number, "all other neighbours above"
+                    sum = currArray[currDim - 1][j - 1];
+                    for (let n = -1; n < 2; n++) {
+                        sum += currArray[currDim - 2][j + n];
+                    }
+                }
+
                 currArray[currDim - 1][j] = sum;
             }
         } else {
             console.log('even');
             // start in bottom right corner, go up, then left
+            currArray = previousArray.slice(0);
         }
+
+        previousArray = currArray.slice(0);
     }
 
     return currArray;
