@@ -56,6 +56,8 @@ function dimArray(x) {
         currArray = new Array(currDim);
         if (currDim % 2 !== 0) {
             console.log('odd');
+            console.log(`currDim ${currDim}`);
+            console.log(`currArray length ${currArray.length}`);
             // start in upper left corner, go down, then right
             // left side
             for (let j = 0; j < currDim; j++) {
@@ -101,13 +103,31 @@ function dimArray(x) {
             console.log(`currDim ${currDim}`);
             console.log(`currArray length ${currArray.length}`);
             // start in bottom right corner, go up, then left
+            let sum = 0;
             let num = 0;
+            // right side minus top row
             for (let j = currDim - 1; j > 0; j--) {
-                currArray[j] = previousArray[j - 1].concat([num]);
+                if (j === currDim - 1) {
+                    // if bottom right corner, add last previous array number above and above-left
+                    console.log(`previousArray length ${previousArray.length}`);
+                    sum =  previousArray[currDim - 2][currDim - 2] + previousArray[currDim - 3][currDim - 2];
+                } else if (j === 1) {
+                    // if one less than the top right element, add previous current number, top right corner of prev, one down from that of prev
+                    sum = currArray[2][currDim - 1] + previousArray[0][currDim - 2] + previousArray[1][currDim - 2];
+                } else {
+                    // if other right side element, add previous number, "all other neighbours to the left"
+                    sum = currArray[j + 1][currDim - 1];
+                    for (let n = -1; n < 2; n ++) {
+                        console.log(`previousArray[${j - 1} + ${n}] ${previousArray[j - 1 + n]}`);
+                        sum += previousArray[j - 1 + n][currDim - 2];
+                    }
+                }
+                currArray[j] = previousArray[j - 1].concat([sum]);
                 num ++;
             }
 
             currArray[0] = [];
+            // top row
             for (let j = 0; j < currDim; j++) {
                 currArray[0] = [j].concat(currArray[0]);
             }
